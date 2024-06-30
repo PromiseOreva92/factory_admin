@@ -37,6 +37,7 @@
          var row = '<tr>';
          row += '<td>' + item.id + '</td>';
          row += '<td>' + item.name + '</td>';
+         row += '<td>' + item.price + '</td>';
          row += '<td>' + item.quantity + '</td>';
          row += '<td>' + item.amount + '</td>';
          row += '</tr>';
@@ -127,25 +128,33 @@
  // Row click event to toggle selection
  var selectedRow = null;
 $('#myTable tbody').on('click', 'tr', function() {
+    
      if(selectedRow){
          selectedRow.removeClass('selected');
+
      }
-     selectedRow = $(this);
-     selectedRow.addClass('selected');
+        selectedRow = $(this);
+        selectedRow.addClass('selected');
+     
  });
 
  // Update button click event to open the modal
  $('#updateButton').click(function() {
      if (!selectedRow) {
-       alert('Please select a LGA to update.');
+       alert('Please select a Material to update.');
      }
      
-     var Id = selectedRow.find("td:eq(0)").text(); 
-     var Name = selectedRow.find("td:eq(1)").text(); 
-     var StataId = selectedRow.find("td:eq(2)").text(); 
-     $('#updateModal #Id').val(Id);
-     $('#updateModal #Name').val(Name);
-     $('#updateModal #StateId').val(state_Id);
+     var id = selectedRow.find("td:eq(0)").text(); 
+     var name = selectedRow.find("td:eq(1)").text(); 
+     var price = selectedRow.find("td:eq(2)").text(); 
+     var quantity = selectedRow.find("td:eq(3)").text(); 
+     var amount = selectedRow.find("td:eq(4)").text(); 
+
+     $('#updateModal #id').val(id);
+     $('#updateModal #name').val(name);
+     $('#updateModal #price').val(price);
+     $('#updateModal #quantity').val(quantity);
+     $('#updateModal #amount').val(amount);
      $('#updateModal').show();
     
  });
@@ -157,15 +166,18 @@ $('#myTable tbody').on('click', 'tr', function() {
  // Form submission for update
  $('#updateForm').submit(function(e) {
      e.preventDefault();
-     var Id = $('#updateModal #Id').val();
-     var Name = $('#updateModal #Name').val();
-     var StateId = $('#updateModal #StateId').val();
+     var id = $('#updateModal #id').val();
+     var name = $('#updateModal #name').val();
+     var price = $('#updateModal #price').val();
+     var quantity = $('#updateModal #quantity').val();
+     var amount = $('#updateModal #amount').val();
      // Perform AJAX request to update user data
          $.ajax({
          url: 'php/materials.php',
          type: 'PUT',
-         data: { id: Id, name: Name, state_Id: state_Id },
-         success: function() {
+         data: { id: id, name: name, price: price, amount: amount, quantity:quantity },
+         success: function(response) {
+            console.log(response);
             $('#updateModal').hide();
             fetchPaginatedData(currentPage, pageSize); 
          }
@@ -175,18 +187,18 @@ $('#myTable tbody').on('click', 'tr', function() {
   // Delete button click event
  $('#deleteButton').click(function() {
      if(!selectedRow){
-         alert('Please select a user to delete.');
+         alert('Please select a Material to delete.');
          return;
      }
      
-    var userId = selectedRow.find("td:eq(0)").text(); 
+    var id = selectedRow.find("td:eq(0)").text(); 
      
-     if (confirm('Are you sure you want to delete this LGA?')) {
+     if (confirm('Are you sure you want to delete this Material?')) {
          // Perform your AJAX request to delete the user
            $.ajax({
              url: 'php/materials.php',
              type: 'DELETE',
-             data: { id: Id },
+             data: { id: id },
              success: function() {
                  fetchPaginatedData(currentPage, pageSize);
              }

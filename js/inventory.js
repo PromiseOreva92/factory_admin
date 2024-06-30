@@ -16,7 +16,7 @@
          dataType: 'json',
          success: function(response) {
             // console.log(response.material_data)
-             displayData(response.page_data.items);
+             displayData(response.page_data.items,response.product_data);
              renderPagination(response.page_data.totalPages);
              fetchProducts(response.product_data)
           // updatePaginationControls(response.page, response.totalPages);
@@ -34,20 +34,32 @@
     selectEl.empty(); // Clear existing data
     $.each(items, function(index, item) {
         var option = '<option value="'+item.id+'">';
-        option += item.product + '</option>';
+        option += item.name + '</option>';
         selectEl.append(option);
     });
 }
+
+function hasValue(obj, value) {
+    console.log(obj)
+    for (let key in obj) {
+        if (obj[key]["id"] === value) {
+            
+            // return true;
+            return obj[key]["name"];
+        }
+    }
+    return "Not Available";
+}
  
  // Display data on Table
- function displayData(items) {
+ function displayData(items,products) {
      var tableBody = $('#tableBody');
      tableBody.empty(); // Clear existing data
 
      $.each(items, function(index, item) {
          var row = '<tr>';
          row += '<td>' + item.id + '</td>';
-         row += '<td>' + item.product_id + '</td>';
+         row += '<td>' + hasValue(products,item.product_id) + '</td>';
          row += '<td>' + item.quantity + '</td>';
          row += '<td>' + item.price + '</td>';
          row += '</tr>';
