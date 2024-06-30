@@ -10,16 +10,13 @@
     <!-- <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script> -->
     <!-- <script src="js/jquery-3.6.4.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/materials.js"></script>
+    <script src="js/product.js"></script>
     <!-- <script src="js/gen.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.wordexport/0.3/jquery.wordexport.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/css.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -76,9 +73,9 @@
   
   
         </ul>
-      </nav>
+       </nav>
     </div>
-    <div><h3 class="display-6">Materials</h3></div>
+    <div><h3 class="display-6">Products</h3></div>
      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input type="search" id="searchInput" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
@@ -116,22 +113,12 @@
                 <a href="#" class="sort-link">
                  <i class="fas fa-chevron-up sort-icon"></i>
                 </a></i></th>
-                <th>Name 
+
+                </a></i></th>
+                <th>Product 
                  <a href="#" class="sort-link">
                  <i class="fas fa-chevron-up sort-icon"></i>
                 </a></i></th>
-                <th>Price 
-                  <a href="#" class="sort-link">
-                  <i class="fas fa-chevron-up sort-icon"></i>
-                 </a></i></th>
-                <th>Quantity 
-                 <a href="#" class="sort-link">
-                 <i class="fas fa-chevron-up sort-icon"></i>
-                </a></i></th>
-                <th>Amount 
-                  <a href="#" class="sort-link">
-                  <i class="fas fa-chevron-up sort-icon"></i>
-                 </a></i></th>
               
                 <!-- Add more columns as needed -->
             </tr>
@@ -154,17 +141,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Material</h5>
+        <h5 class="modal-title">Add Product</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="addForm">
-        <input type="hidden" id="Id">
-        Name: <input type="text" id="name"><br><br>
-        Price: <input type="text" id="price"><br><br>
-        Quantity: <input type="text" id="quantity"><br><br>
-        Amount: <input type="text" id="amount"><br><br>
-        
+        Name: <input type="text" id="product"><br><br>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Save changes</button>
@@ -183,11 +165,9 @@
       </div>
       <div class="modal-body">
         <form id="updateForm">
-        <input type="hidden" id="id">
-        Name: <input type="text" id="name"><br><br>
-        Price: <input type="text" id="price"><br><br>
-        Quantity: <input type="text" id="quantity"><br><br>
-        Amount: <input type="text" id="amount"><br><br>
+        <input type="hidden" id="Id">
+        Name: <input type="text" id="Name"><br><br>
+        State: <input type="text" id="StateId"><br><br>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Update</button>
