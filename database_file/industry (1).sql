@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2024 at 07:34 PM
+-- Generation Time: Jun 30, 2024 at 02:00 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -56,11 +56,19 @@ CREATE TABLE `incident_reports` (
 
 CREATE TABLE `inventories` (
   `id` int(11) NOT NULL,
-  `production_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `quantity` decimal(10,2) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `inventories`
+--
+
+INSERT INTO `inventories` (`id`, `product_id`, `quantity`, `price`, `date`) VALUES
+(1, 1, '10.00', '1200.00', '2024-06-29 13:17:19'),
+(2, 1, '100.00', '1200.00', '2024-06-30 11:37:04');
 
 -- --------------------------------------------------------
 
@@ -77,6 +85,14 @@ CREATE TABLE `materials` (
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `materials`
+--
+
+INSERT INTO `materials` (`id`, `name`, `price`, `quantity`, `amount`, `date`) VALUES
+(1, 'Material A', '1200.00', '10.00', '12000.00', '2024-06-29 12:45:43'),
+(2, 'Material B', '1200.00', '10.00', '100000.00', '2024-06-29 12:45:54');
+
 -- --------------------------------------------------------
 
 --
@@ -92,6 +108,13 @@ CREATE TABLE `production` (
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `production`
+--
+
+INSERT INTO `production` (`id`, `product_id`, `material_id`, `input_tonnage`, `output_tonnage`, `date`) VALUES
+(1, 1, 1, '1000.00', '1000.00', '2024-06-29 12:50:08');
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +127,14 @@ CREATE TABLE `products` (
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `date`) VALUES
+(1, 'Product A', '2024-06-29 12:29:59'),
+(2, 'Product B', '2024-06-30 11:39:04');
+
 -- --------------------------------------------------------
 
 --
@@ -112,7 +143,7 @@ CREATE TABLE `products` (
 
 CREATE TABLE `sales` (
   `id` int(11) NOT NULL,
-  `production_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `date` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -140,7 +171,7 @@ ALTER TABLE `incident_reports`
 --
 ALTER TABLE `inventories`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products` (`production_id`);
+  ADD KEY `products` (`product_id`);
 
 --
 -- Indexes for table `materials`
@@ -167,7 +198,7 @@ ALTER TABLE `products`
 --
 ALTER TABLE `sales`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products` (`production_id`);
+  ADD KEY `products` (`product_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -189,25 +220,25 @@ ALTER TABLE `incident_reports`
 -- AUTO_INCREMENT for table `inventories`
 --
 ALTER TABLE `inventories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `production`
 --
 ALTER TABLE `production`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -235,19 +266,20 @@ ALTER TABLE `incident_reports`
 -- Constraints for table `inventories`
 --
 ALTER TABLE `inventories`
-  ADD CONSTRAINT `inventories_ibfk_1` FOREIGN KEY (`production_id`) REFERENCES `production` (`id`);
+  ADD CONSTRAINT `inventories_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
 -- Constraints for table `production`
 --
 ALTER TABLE `production`
-  ADD CONSTRAINT `production_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+  ADD CONSTRAINT `production_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `production_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id`);
 
 --
 -- Constraints for table `sales`
 --
 ALTER TABLE `sales`
-  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`production_id`) REFERENCES `production` (`id`);
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
