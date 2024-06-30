@@ -10,15 +10,18 @@
  // Fetch Page with Pagination
  function fetchPaginatedData(page, limit) {
      $.ajax({
-         url: 'php/inventory.php',
+         url: 'php/sales.php',
          type: 'GET',
-         data: { page: page, limit: limit},
+          data: { page: page, limit: limit},
          dataType: 'json',
          success: function(response) {
-            // console.log(response.material_data)
-             displayData(response.page_data.items,response.product_data);
+            console.log(response)
+            displayData(response.page_data.items,response.product_data);
              renderPagination(response.page_data.totalPages);
              fetchProducts(response.product_data)
+            //  displayData(response.items);
+            //  renderPagination(response.totalPages);
+            //  fetchProducts(response.product_data)
           // updatePaginationControls(response.page, response.totalPages);
              
           //   updatePaginationControls(1, 10);
@@ -38,8 +41,7 @@
         selectEl.append(option);
     });
 }
-
-function hasValue(obj, value) {
+ function hasValue(obj, value) {
     console.log(obj)
     for (let key in obj) {
         if (obj[key]["id"] === value) {
@@ -49,7 +51,7 @@ function hasValue(obj, value) {
         }
     }
     return "Not Available";
-}
+ }
  
  // Display data on Table
  function displayData(items,products) {
@@ -59,9 +61,9 @@ function hasValue(obj, value) {
      $.each(items, function(index, item) {
          var row = '<tr>';
          row += '<td>' + item.id + '</td>';
-         row += '<td>' + hasValue(products,item.product_id) + '</td>';
+         row += '<td>' +hasValue(products,item.product_id) + '</td>';
          row += '<td>' + item.quantity + '</td>';
-         row += '<td>' + item.price + '</td>';
+         row += '<td>' + item.amount + '</td>';
          row += '</tr>';
          tableBody.append(row);
      });
@@ -131,13 +133,15 @@ function hasValue(obj, value) {
      e.preventDefault();
      var product = $('#product_list').val().trim();
      var quantity = $('#quantity').val().trim();
-     var price = $('#price').val().trim();
+     var amount = $('#amount').val().trim();
      $.ajax({
-         url: 'php/inventory.php',
+         url: 'php/sales.php',
          type: 'POST',
-         data: {  product: product, quantity: quantity, price: price},
+         data: { product: product, quantity: quantity, amount: amount },
          success: function() {
+
              $('#addModal').css('display', 'none');
+            //  console.log(response)
              fetchPaginatedData(currentPage, pageSize);
          }
      });
@@ -157,15 +161,17 @@ $('#myTable tbody').on('click', 'tr', function() {
  // Update button click event to open the modal
  $('#updateButton').click(function() {
      if (!selectedRow) {
-       alert('Please select a LGA to update.');
+       alert('Please select a Expense to update.');
      }
      
      var id = selectedRow.find("td:eq(0)").text(); 
+    //  var product = selectedRow.find("td:eq(1)").text(); 
      var quantity = selectedRow.find("td:eq(2)").text(); 
-     var price = selectedRow.find("td:eq(3)").text(); 
+     var amount = selectedRow.find("td:eq(3)").text(); 
      $('#updateModal #id').val(id);
+    //  $('#updateModal #product').val(product);
      $('#updateModal #quantity').val(quantity);
-     $('#updateModal #price').val(price);
+     $('#updateModal #amount').val(amount);
      $('#updateModal').show();
     
  });
@@ -178,14 +184,16 @@ $('#myTable tbody').on('click', 'tr', function() {
  $('#updateForm').submit(function(e) {
      e.preventDefault();
      var id = $('#updateModal #id').val();
+    //  var product = $('#updateModal #product').val();
      var quantity = $('#updateModal #quantity').val();
-     var price = $('#updateModal #price').val();
+     var amount = $('#updateModal #amount').val();
      // Perform AJAX request to update user data
          $.ajax({
-         url: 'php/inventory.php',
+         url: 'php/sales.php',
          type: 'PUT',
-         data: { id: id, quantity: quantity, price: price },
-         success: function() {
+         data: { id:id, quantity: quantity, amount: amount },
+         success: function(response) {
+            console.log(response)
             $('#updateModal').hide();
             fetchPaginatedData(currentPage, pageSize); 
          }
@@ -195,16 +203,16 @@ $('#myTable tbody').on('click', 'tr', function() {
   // Delete button click event
  $('#deleteButton').click(function() {
      if(!selectedRow){
-         alert('Please select a Inventory to delete.');
+         alert('Please select a user to delete.');
          return;
      }
      
     var id = selectedRow.find("td:eq(0)").text(); 
      
-     if (confirm('Are you sure you want to delete this Inventory?')) {
+     if (confirm('Are you sure you want to delete this Sale?')) {
          // Perform your AJAX request to delete the user
            $.ajax({
-             url: 'php/inventory.php',
+             url: 'php/sales.php',
              type: 'DELETE',
              data: { id: id },
              success: function() {

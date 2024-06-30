@@ -115,10 +115,14 @@
                 <a href="#" class="sort-link">
                  <i class="fas fa-chevron-up sort-icon"></i>
                 </a></i></th>
-                <th>Expenses 
+                <th>Product 
                  <a href="#" class="sort-link">
                  <i class="fas fa-chevron-up sort-icon"></i>
                 </a></i></th>
+                <th>Quantity 
+                  <a href="#" class="sort-link">
+                  <i class="fas fa-chevron-up sort-icon"></i>
+                 </a></i></th>
                 <th>Amount 
                   <a href="#" class="sort-link">
                   <i class="fas fa-chevron-up sort-icon"></i>
@@ -151,7 +155,8 @@
       <div class="modal-body">
         <form id="addForm">
         <input type="hidden" id="Id">
-        Purpose: <input type="text" id="purpose"><br><br>
+        Product: <select name="" id="product_list"></select><br><br>
+        quantity: <input type="text" id="quantity"><br><br>
         Amount: <input type="text" id="amount"><br><br>
         
       </div>
@@ -172,8 +177,9 @@
       </div>
       <div class="modal-body">
         <form id="updateForm">
-        <input type="hidden" id="Id">
-        Purpose: <input type="text" id="name"><br><br>
+        <input type="hidden" id="id">
+        <!-- Product: <select name="" id="product_list"></select><br><br> -->
+        quantity: <input type="text" id="quantity"><br><br>
         Amount: <input type="text" id="amount"><br><br>
       </div>
       <div class="modal-footer">

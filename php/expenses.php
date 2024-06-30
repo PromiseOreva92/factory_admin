@@ -15,20 +15,27 @@ $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 20;
     'as' => 'StateName'         // Alias to use for the replaced column in the result set
 ];
     $pageData = $db->fetchPaginatedDataFk('expenses', $page, $limit, $foreignKeyDetails);
+    $productData = $db->select('products');
+    $arr = [
+        "page_data" => $pageData,
+        "product_data" => $productData
+    ];
     // Return the result as JSON
 header('Content-Type: application/json');
-    echo json_encode($pageData);
+    echo json_encode($arr);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "here";
-    $purpose = $_POST['purpose'];
+    $product = $_POST['product'];
+    $quantity = $_POST['quantity'];
     $amount = $_POST['amount'];
-    $db->insert('expenses', ['purpose' => $purpose,'amount'=>$amount]);
+    $db->insert('expenses', [ 'product_id' => $product, 'quantity' => $quantity, 'amount' => $amount ]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     parse_str(file_get_contents("php://input"), $_PUT);
     $id = $_PUT['id'];
-    $name = $_PUT['name'];
-    $stateId = $_PUT['StateId'];
-    $db->update('expenses', ['name' => $name, 'State_Id' => $stateId], "id = $id");
+    // $product = $_PUT['product'];
+    $quantity = $_PUT['quantity'];
+    $amount = $_PUT['amount'];
+    $db->update('expenses', ['quantity' => $quantity, 'amount' => $amount ], "id = $id");
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     parse_str(file_get_contents("php://input"), $_DELETE); 
     $id = $_DELETE['id'];

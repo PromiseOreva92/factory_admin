@@ -173,13 +173,12 @@ $('#myTable tbody').on('click', 'tr', function() {
      if (!selectedRow) {
        alert('Please select a LGA to update.');
      }
-     
-     var Id = selectedRow.find("td:eq(0)").text(); 
-     var Name = selectedRow.find("td:eq(1)").text(); 
-     var StataId = selectedRow.find("td:eq(2)").text(); 
-     $('#updateModal #Id').val(Id);
-     $('#updateModal #Name').val(Name);
-     $('#updateModal #StateId').val(state_Id);
+     var id = selectedRow.find("td:eq(0)").text(); 
+     var input_tonnage = selectedRow.find("td:eq(3)").text(); 
+     var output_tonnage = selectedRow.find("td:eq(4)").text(); 
+     $('#updateModal #id').val(id);
+     $('#updateModal #input_tonnage').val(input_tonnage);
+     $('#updateModal #output_tonnage').val(output_tonnage);
      $('#updateModal').show();
     
  });
@@ -191,14 +190,14 @@ $('#myTable tbody').on('click', 'tr', function() {
  // Form submission for update
  $('#updateForm').submit(function(e) {
      e.preventDefault();
-     var Id = $('#updateModal #Id').val();
-     var Name = $('#updateModal #Name').val();
-     var StateId = $('#updateModal #StateId').val();
+     var id = $('#updateModal #id').val();
+     var input_tonnage = $('#updateModal #input_tonnage').val();
+     var output_tonnage = $('#updateModal #output_tonnage').val();
      // Perform AJAX request to update user data
          $.ajax({
-         url: 'php/lga.php',
+         url: 'php/production.php',
          type: 'PUT',
-         data: { id: Id, name: Name, state_Id: state_Id },
+         data: { id: id, input_tonnage: input_tonnage, output_tonnage: output_tonnage },
          success: function() {
             $('#updateModal').hide();
             fetchPaginatedData(currentPage, pageSize); 
@@ -213,14 +212,14 @@ $('#myTable tbody').on('click', 'tr', function() {
          return;
      }
      
-    var userId = selectedRow.find("td:eq(0)").text(); 
+    var id = selectedRow.find("td:eq(0)").text(); 
      
-     if (confirm('Are you sure you want to delete this LGA?')) {
+     if (confirm('Are you sure you want to delete this Production?')) {
          // Perform your AJAX request to delete the user
            $.ajax({
-             url: 'php/lga.php',
+             url: 'php/production.php',
              type: 'DELETE',
-             data: { id: Id },
+             data: { id: id },
              success: function() {
                  fetchPaginatedData(currentPage, pageSize);
              }

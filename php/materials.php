@@ -29,8 +29,10 @@ header('Content-Type: application/json');
     parse_str(file_get_contents("php://input"), $_PUT);
     $id = $_PUT['id'];
     $name = $_PUT['name'];
-    $stateId = $_PUT['StateId'];
-    $db->update('materials', ['name' => $name, 'State_Id' => $stateId], "id = $id");
+    $price = $_PUT['price'];
+    $quantity = $_PUT['quantity'];
+    $amount = $_PUT['amount'];
+    $db->update('materials', ['name' => $name, 'price' => $price,'quantity'=> $quantity,'amount'=>$amount], "id = $id");
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     parse_str(file_get_contents("php://input"), $_DELETE); 
     $id = $_DELETE['id'];
