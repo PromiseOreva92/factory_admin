@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2024 at 02:00 PM
+-- Generation Time: Jul 01, 2024 at 01:41 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -29,10 +29,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `expenses` (
   `id` int(11) NOT NULL,
-  `material_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `product_id`, `quantity`, `amount`, `date`) VALUES
+(2, 2, 10, '3000.00', '2024-06-30 22:04:45');
 
 -- --------------------------------------------------------
 
@@ -57,7 +65,7 @@ CREATE TABLE `incident_reports` (
 CREATE TABLE `inventories` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` decimal(10,2) NOT NULL,
+  `quantity` int(15) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -67,8 +75,7 @@ CREATE TABLE `inventories` (
 --
 
 INSERT INTO `inventories` (`id`, `product_id`, `quantity`, `price`, `date`) VALUES
-(1, 1, '10.00', '1200.00', '2024-06-29 13:17:19'),
-(2, 1, '100.00', '1200.00', '2024-06-30 11:37:04');
+(2, 1, 100, '1200.00', '2024-06-30 11:37:04');
 
 -- --------------------------------------------------------
 
@@ -90,7 +97,7 @@ CREATE TABLE `materials` (
 --
 
 INSERT INTO `materials` (`id`, `name`, `price`, `quantity`, `amount`, `date`) VALUES
-(1, 'Material A', '1200.00', '10.00', '12000.00', '2024-06-29 12:45:43'),
+(1, 'Material A', '1200.00', '10.00', '12001.00', '2024-06-29 12:45:43'),
 (2, 'Material B', '1200.00', '10.00', '100000.00', '2024-06-29 12:45:54');
 
 -- --------------------------------------------------------
@@ -107,13 +114,6 @@ CREATE TABLE `production` (
   `output_tonnage` decimal(10,2) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `production`
---
-
-INSERT INTO `production` (`id`, `product_id`, `material_id`, `input_tonnage`, `output_tonnage`, `date`) VALUES
-(1, 1, 1, '1000.00', '1000.00', '2024-06-29 12:50:08');
 
 -- --------------------------------------------------------
 
@@ -144,6 +144,7 @@ INSERT INTO `products` (`id`, `name`, `date`) VALUES
 CREATE TABLE `sales` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `date` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -157,7 +158,7 @@ CREATE TABLE `sales` (
 --
 ALTER TABLE `expenses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `purpose` (`material_id`);
+  ADD KEY `purpose` (`product_id`);
 
 --
 -- Indexes for table `incident_reports`
@@ -208,7 +209,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `incident_reports`
@@ -244,7 +245,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -254,7 +255,7 @@ ALTER TABLE `sales`
 -- Constraints for table `expenses`
 --
 ALTER TABLE `expenses`
-  ADD CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id`);
+  ADD CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
 -- Constraints for table `incident_reports`
